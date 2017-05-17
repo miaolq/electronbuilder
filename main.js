@@ -5,12 +5,17 @@ const { app, BrowserWindow } = require('electron')
 const path = require('path')
 const url = require('url')
 const execFile = require('child_process').execFile
+const dialog = require('electron').dialog
 
-const child = execFile(defaultAgentPath, (error, stdout, stderr) => {
+const videoPlugin = execFile(defaultAgentPath, (error, stdout, stderr) => {
   if (error) {
     throw error;
   }
-})
+});
+
+videoPlugin.on('exit', (code, singal) => {
+  dialog.showErrorBox('视频插件退出', '无法视频通话,请重启程序');
+});
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
